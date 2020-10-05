@@ -1,16 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
-  import Staff from './Staff'
-	
-	let name = 'world';
-	
-	let staff;
-	const onClick = () => staff.re();
+  import { fabric } from 'fabric';
 
+  import Staff from './Staff';
+	
 	onMount(() => {
-		const canvas = document.getElementById('canvas');
-		const ctx = canvas.getContext('2d');
-		staff = new Staff(ctx, 0, 10).draw().re().mi();
+    const canvas = new fabric.Canvas('canvas');
+
+    const staff = new Staff(canvas, 0, 10);
+    staff.lines();
+    staff.re();
+    staff.mi();
 		document.addEventListener('keydown', e => {
 			switch(e.code) {
 				case 'KeyD':
@@ -19,13 +19,15 @@
 				case 'KeyE':
 					staff.mi();
 					break;
+				case 'KeyF':
+					staff.fa();
+					break;
+				case 'KeyG':
+					staff.sol();
+					break;
 			}
 		})
-		staff.draw();
-		new Staff(ctx, 0, 90).draw().re().mi();
 	})
 </script>
 
 <canvas id='canvas' height='300' width='1000'/>
-<button type='button' on:click={onClick}>Re</button>
-<button type='button' on:click={() => staff.mi()}>Mi</button>

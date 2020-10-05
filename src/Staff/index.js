@@ -1,6 +1,10 @@
+import { fabric } from 'fabric';
+
+const range = x => [...Array(x).keys()]
+
 class Staff {
-  constructor(ctx, x, y, lineGap = 10, lineLength = 500) {
-    this.ctx = ctx;
+  constructor(canvas, x, y, lineGap = 10, lineLength = 500) {
+    this.canvas = canvas;
     this.x = x;
     this.y = y;
     this.lineGap = lineGap;
@@ -8,38 +12,61 @@ class Staff {
     this.noteOffset = 10;
   }
   
-  draw() {
-    for (let i = 0; i < 5; i++) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.x, this.y + i * this.lineGap);
-      this.ctx.lineTo(this.x + this.lineLength, this.y + i * this.lineGap);
-      this.ctx.stroke();
-    }
-    
-    return this;
+  lines() {
+    this.canvas.add(new fabric.Group(range(5).map(i => 
+      new fabric.Line(
+        [
+          this.x,
+          this.y + i * this.lineGap,
+          this.x + this.lineLength,
+          this.y + i * this.lineGap
+        ],
+        {
+          stroke: 'black',
+          hasControls: false,
+        }
+      )
+    )))
   }
   
   
   drawNote(y, width = 4) {
     const noteX = this.x + this.noteOffset;
-    this.ctx.moveTo(noteX, y);
-    this.ctx.arc(noteX, y, width, 0, Math.PI * 2, true);
-    this.ctx.fill();
-    this.ctx.beginPath();
-    this.ctx.moveTo(noteX + width, y)
-    this.ctx.lineTo(noteX + width, y - 25);
-    this.ctx.closePath();
-    this.ctx.stroke();
-    
+    const circle = new fabric.Circle({
+      left: noteX,
+      top: y,
+      radius: width,
+    });
+
+    const line = new fabric.Line(
+      [
+        noteX + width * 2,
+        y + width,
+        noteX + width * 2,
+        y - 25
+      ],
+      { stroke: 'black'}
+    );
+
+    this.canvas.add(new fabric.Group([circle, line]));
+
     this.noteOffset += 20;
   }
   
   re() {
-    this.drawNote(this.y + 4.5 * this.lineGap);
+    this.drawNote(this.y + 4 * this.lineGap);
     return this;
   }
   mi() {
-    this.drawNote(this.y + 4 * this.lineGap);
+    this.drawNote(this.y + 3.5 * this.lineGap);
+    return this;
+  }
+  fa() {
+    this.drawNote(this.y + 3 * this.lineGap);
+    return this;
+  }
+  sol() {
+    this.drawNote(this.y + 2.5 * this.lineGap);
     return this;
   }
 }
