@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
   import { fabric } from 'fabric';
 
-  import Staff from './Staff';
+  import Staff from '../Staff';
 	
 	onMount(() => {
     const canvas = new fabric.Canvas('canvas');
