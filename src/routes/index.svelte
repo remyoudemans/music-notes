@@ -1,42 +1,42 @@
 <script>
-	import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { fabric } from 'fabric';
 
   import Staff from '../Staff';
-	
-	onMount(() => {
+
+  onMount(() => {
     const canvas = new fabric.Canvas('canvas');
 
     const staff = new Staff(canvas, 0, 10);
     staff.lines();
     staff.re();
     staff.mi();
-		document.addEventListener('keydown', e => {
-			switch(e.code) {
-				case 'KeyD':
-					staff.re();
-					break;
-				case 'KeyE':
-					staff.mi();
-					break;
-				case 'KeyF':
-					staff.fa();
-					break;
-				case 'KeyG':
-					staff.sol();
-					break;
-				case 'KeyA':
-					staff.la();
-					break;
-				case 'KeyB':
-					staff.si();
-					break;
-				case 'KeyC':
-					staff.do();
-					break;
-			}
-		})
-	})
+    document.addEventListener('keydown', e => {
+      switch (e.code) {
+        case 'KeyD':
+          staff.re();
+          break;
+        case 'KeyE':
+          staff.mi();
+          break;
+        case 'KeyF':
+          staff.fa();
+          break;
+        case 'KeyG':
+          staff.sol();
+          break;
+        case 'KeyA':
+          staff.la();
+          break;
+        case 'KeyB':
+          staff.si();
+          break;
+        case 'KeyC':
+          staff.do();
+          break;
+      }
+    });
+  });
 </script>
 
-<canvas id='canvas' height='300' width='1000'/>
+<canvas id="canvas" height="300" width="1000" />
