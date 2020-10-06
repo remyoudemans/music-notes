@@ -69,6 +69,18 @@ class Staff {
     this.drawNote(this.y + 2.5 * this.lineGap);
     return this;
   }
+  la() {
+    this.drawNote(this.y + 2 * this.lineGap);
+    return this;
+  }
+  si() {
+    this.drawNote(this.y + 1.5 * this.lineGap);
+    return this;
+  }
+  do() {
+    this.drawNote(this.y + 1 * this.lineGap);
+    return this;
+  }
 }
 
 export default Staff;

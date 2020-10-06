@@ -25,6 +25,15 @@
 				case 'KeyG':
 					staff.sol();
 					break;
+				case 'KeyA':
+					staff.la();
+					break;
+				case 'KeyB':
+					staff.si();
+					break;
+				case 'KeyC':
+					staff.do();
+					break;
 			}
 		})
 	})
