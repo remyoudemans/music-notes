@@ -11,7 +11,9 @@ class Staff {
     this.lineGap = lineGap;
     this.lineLength = lineLength;
     this.noteOffset = 10;
-    this.synth = new Synth().toDestination();
+    this.synth = new Synth()
+    this.synth.oscillator.type = 'sine';
+    this.synth.toDestination();
     this.octave = 4;
   }
 
