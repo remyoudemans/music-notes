@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import { Synth } from 'tone';
 
 const range = x => [...Array(x).keys()];
 
@@ -10,6 +11,8 @@ class Staff {
     this.lineGap = lineGap;
     this.lineLength = lineLength;
     this.noteOffset = 10;
+    this.synth = new Synth().toDestination();
+    this.octave = 4;
   }
 
   lines() {
@@ -34,8 +37,9 @@ class Staff {
     );
   }
 
-  drawNote(y, width = 4) {
+  drawNote(y, note) {
     const noteX = this.x + this.noteOffset;
+    const width = this.lineGap / 2;
     const circle = new fabric.Circle({
       left: noteX,
       top: y,
@@ -48,36 +52,37 @@ class Staff {
     );
 
     this.canvas.add(new fabric.Group([circle, line]));
+    this.synth.triggerAttackRelease(`${note}${this.octave}`, "32n");
 
     this.noteOffset += 20;
   }
 
   re() {
-    this.drawNote(this.y + 4 * this.lineGap);
+    this.drawNote(this.y + 4 * this.lineGap, 'D');
     return this;
   }
   mi() {
-    this.drawNote(this.y + 3.5 * this.lineGap);
+    this.drawNote(this.y + 3.5 * this.lineGap, 'E');
     return this;
   }
   fa() {
-    this.drawNote(this.y + 3 * this.lineGap);
+    this.drawNote(this.y + 3 * this.lineGap, 'F');
     return this;
   }
   sol() {
-    this.drawNote(this.y + 2.5 * this.lineGap);
+    this.drawNote(this.y + 2.5 * this.lineGap, 'G');
     return this;
   }
   la() {
-    this.drawNote(this.y + 2 * this.lineGap);
+    this.drawNote(this.y + 2 * this.lineGap, 'A');
     return this;
   }
   si() {
-    this.drawNote(this.y + 1.5 * this.lineGap);
+    this.drawNote(this.y + 1.5 * this.lineGap, 'B');
     return this;
   }
   do() {
-    this.drawNote(this.y + 1 * this.lineGap);
+    this.drawNote(this.y + 4.5 * this.lineGap, 'C');
     return this;
   }
 }

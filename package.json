@@ -12,7 +12,8 @@
     "compression": "^1.7.1",
     "fabric": "4.2.0",
     "polka": "next",
-    "sirv": "^1.0.0"
+    "sirv": "^1.0.0",
+    "tone": "14.7.58"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

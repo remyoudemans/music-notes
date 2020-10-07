@@ -12,8 +12,6 @@
 
     const staff = new Staff(canvas, 0, 10);
     staff.lines();
-    staff.re();
-    staff.mi();
     document.addEventListener('keydown', e => {
       pressedKey = e.key;
       switch (e.code) {
