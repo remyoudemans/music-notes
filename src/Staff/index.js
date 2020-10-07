@@ -16,6 +16,49 @@ class Staff {
     this.synth.oscillator.type = 'sine';
     this.synth.toDestination();
     this.octave = 5;
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Shift') {
+        this.upOctave();
+      }
+      switch (e.code) {
+        case 'KeyD':
+          this.re();
+          break;
+        case 'KeyE':
+          this.mi();
+          break;
+        case 'KeyF':
+          this.fa();
+          break;
+        case 'KeyG':
+          this.sol();
+          break;
+        case 'KeyA':
+          this.la();
+          break;
+        case 'KeyB':
+          this.si();
+          break;
+        case 'KeyC':
+          this.do();
+          break;
+      }
+    });
+
+    document.addEventListener('keyup', e => {
+      if (e.key === 'Shift') {
+        this.downOctave();
+      }
+    })
+  }
+
+  upOctave() {
+    this.octave += 1;
+  }
+
+  downOctave() {
+    this.octave -= 1;
   }
 
   drawLines() {
