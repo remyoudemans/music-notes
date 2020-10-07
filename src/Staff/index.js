@@ -20,7 +20,10 @@ class Staff {
     document.addEventListener('keydown', e => {
       if (e.key === 'Shift') {
         this.upOctave();
+      } else if (e.key === 'Alt') {
+        this.downOctave();
       }
+
       switch (e.code) {
         case 'KeyD':
           this.re();
@@ -49,6 +52,8 @@ class Staff {
     document.addEventListener('keyup', e => {
       if (e.key === 'Shift') {
         this.downOctave();
+      } else if (e.key === 'Alt') {
+        this.upOctave();
       }
     })
   }
@@ -92,16 +97,17 @@ class Staff {
   }
 
   drawNote(y, note) {
+    const noteY = y - ((this.octave - 5) * 3.5 * this.lineGap)
     const noteX = this.x + this.noteOffset;
     const width = this.lineGap / 2;
     const circle = new fabric.Circle({
       left: noteX,
-      top: y,
+      top: noteY,
       radius: width,
     });
 
     const line = new fabric.Line(
-      [noteX + width * 2, y + width, noteX + width * 2, y - 25],
+      [noteX + width * 2, noteY + width, noteX + width * 2, noteY - 25],
       { stroke: 'black' }
     );
 
