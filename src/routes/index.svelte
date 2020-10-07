@@ -11,7 +11,8 @@
     const canvas = new fabric.Canvas('canvas');
 
     const staff = new Staff(canvas, 0, 10);
-    staff.lines();
+    staff.drawLines();
+    staff.drawClef();
     document.addEventListener('keydown', e => {
       pressedKey = e.key;
       switch (e.code) {
