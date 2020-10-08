@@ -17,6 +17,21 @@ class Staff {
     this.synth.toDestination();
     this.octave = 5;
 
+    this.showCursor = true;
+    this.cursor = new fabric.Line([
+      x + this.noteOffset,
+      y - lineGap,
+      x + this.noteOffset, y + 5 * lineGap
+    ], {
+        stroke: 'black'
+    });
+
+    setInterval(() => {
+      this.canvas[this.showCursor ? 'add' : 'remove'](this.cursor);
+
+      this.showCursor = !this.showCursor;
+    }, 500)
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Shift') {
         this.upOctave();
@@ -115,6 +130,7 @@ class Staff {
     this.synth.triggerAttackRelease(`${note}${this.octave}`, "32n");
 
     this.noteOffset += 20;
+    this.cursor.left = this.x + this.noteOffset;
   }
 
   re() {
