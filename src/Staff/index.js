@@ -34,9 +34,9 @@ class Staff {
     }, 500)
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Shift') {
+      if (e.key === 'n') {
         this.upOctave();
-      } else if (e.key === 'Alt') {
+      } else if (e.key === 'p') {
         this.downOctave();
       }
 
@@ -48,9 +48,9 @@ class Staff {
     });
 
     document.addEventListener('keyup', e => {
-      if (e.key === 'Shift') {
+      if (e.key === 'n') {
         this.downOctave();
-      } else if (e.key === 'Alt') {
+      } else if (e.key === 'p') {
         this.upOctave();
       }
     })
