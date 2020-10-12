@@ -11,7 +11,7 @@ const flatPath = "M3.22 8.38c0 .57-.22 1.12-.8 1.86A9.36 9.36 0 01.55 12V8.57c.1
 export const noteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 class Staff {
-  constructor(canvas, x, y, lineGap = 10, lineLength = 500) {
+  constructor(canvas, x, y, startOctave, lineGap = 10, lineLength = 500) {
     this.canvas = canvas;
     this.x = x;
     this.y = y;
@@ -21,7 +21,7 @@ class Staff {
     this.synth = new Synth()
     this.synth.oscillator.type = 'sine';
     this.synth.toDestination();
-    this.octave = 5;
+    this.octave = startOctave;
 
     this.showCursor = true;
     this.cursor = new fabric.Line([
@@ -38,12 +38,8 @@ class Staff {
     }, 500)
   }
 
-  upOctave() {
-    this.octave += 1;
-  }
-
-  downOctave() {
-    this.octave -= 1;
+  setOctave(octave) {
+    this.octave = octave;
   }
 
   drawLines() {

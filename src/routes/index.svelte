@@ -6,15 +6,17 @@
   import Staff, { noteNames } from '../Staff';
 
   let pressedKey;
+  let octave = 5;
 
   const extendedCommandKeys = ['[', ']'];
 
   onMount(() => {
     const canvas = new fabric.Canvas('canvas');
 
-    const staff = new Staff(canvas, 0, 10);
+    const staff = new Staff(canvas, 0, 10, octave);
     staff.drawLines();
     staff.drawClef();
+
 
     document.addEventListener('keydown', e => {
       if (extendedCommandKeys.includes(pressedKey)) {
@@ -23,10 +25,12 @@
         pressedKey = e.key;
       }
 
-      if (e.key === 'n') {
-        staff.upOctave();
-      } else if (e.key === 'p') {
-        staff.downOctave();
+      if (e.key === 'n' && octave < 8) {
+        octave = Math.min(8, octave + 1);
+        staff.setOctave(octave);
+      } else if (e.key === 'p' && octave > 2) {
+        octave = Math.max(2, octave - 1);
+        staff.setOctave(octave);
       }
 
       const uppercaseKey = e.key.toUpperCase();
@@ -46,17 +50,19 @@
         staff.drawNote(uppercaseKey, accidental);
       }
     });
-
-    document.addEventListener('keyup', e => {
-      if (e.key === 'n') {
-        staff.downOctave();
-      } else if (e.key === 'p') {
-        staff.upOctave();
-      }
-    })
   });
 
 </script>
 
 <canvas id="canvas" height="300" width="1000" />
 <InputBar command={pressedKey}/>
+<p class='octave-indicator'>Octave: {octave}</p>
+
+<style>
+ .octave-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 5rem;
+ }
+</style>
