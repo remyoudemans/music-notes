@@ -19,6 +19,11 @@
 
 
     document.addEventListener('keydown', e => {
+      if (e.key === ' ') {
+        staff.playback();
+        return;
+      }
+
       if (extendedCommandKeys.includes(pressedKey)) {
         pressedKey += e.key;
       } else {
