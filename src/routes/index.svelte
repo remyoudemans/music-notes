@@ -20,6 +20,11 @@
 
 
     document.addEventListener('keydown', e => {
+      if (e.key === 'Backspace') {
+        staff.deleteNote();
+        return;
+      }
+
       if (e.key === ' ') {
         staff.playback();
         playingBack = !playingBack;
