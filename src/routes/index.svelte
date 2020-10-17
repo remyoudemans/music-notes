@@ -7,6 +7,7 @@
 
   let pressedKey;
   let octave = 5;
+  let playingBack = false;
 
   const extendedCommandKeys = ['[', ']'];
 
@@ -19,6 +20,12 @@
 
 
     document.addEventListener('keydown', e => {
+      if (e.key === ' ') {
+        staff.playback();
+        playingBack = !playingBack;
+        return;
+      }
+
       if (extendedCommandKeys.includes(pressedKey)) {
         pressedKey += e.key;
       } else {
@@ -57,6 +64,7 @@
 <canvas id="canvas" height="300" width="1000" />
 <InputBar command={pressedKey}/>
 <p class='octave-indicator'>Octave: {octave}</p>
+<p>{playingBack ? '▶' : '⏸'}</p>
 
 <style>
  .octave-indicator {
