@@ -148,12 +148,9 @@ class Staff {
 
     this.playingBack = true;
 
-    const synth = new Tone.Synth().toDestination();
     const part = new Tone.Part((time, note) => {
-      // the notes given as the second element in the array
-      // will be passed in as the second argument
-      synth.triggerAttackRelease(note, "8n", time);
-    }, [[0, "C2"], ["0:2", "C3"], ["0:3:2", "G2"]]);
+      this.synth.triggerAttackRelease(note, "8n", time);
+    }, this.notes.map(({ note }, index) => [`0:${index}`, note]));
 
     Tone.Transport.scheduleOnce(() => part.start())
     Tone.Transport.start();
