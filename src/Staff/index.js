@@ -24,6 +24,7 @@ class Staff {
     this.octave = startOctave;
     this.notes = [];
     this.playingBack = false;
+    this.cursorNoteIndex = 0;
 
     this.showCursor = true;
     this.cursor = new fabric.Line([
@@ -37,7 +38,7 @@ class Staff {
     setInterval(() => {
       this.canvas[this.showCursor ? 'add' : 'remove'](this.cursor);
       this.showCursor = !this.showCursor;
-    }, 500)
+    }, 250)
   }
 
   setOctave(octave) {
@@ -131,6 +132,7 @@ class Staff {
 
     this.noteOffset += offsetForNote;
     this.cursor.left = this.x + this.noteOffset;
+    this.cursorNoteIndex = this.notes.length - 1;
   }
 
   getNoteY(noteName) {
@@ -143,6 +145,32 @@ class Staff {
     this.canvas.remove(removedNote.element);
     this.cursor.left -= removedNote.offset;
     this.noteOffset -= removedNote.offset;
+  }
+
+  moveCursor(left) {
+    if (typeof left === 'function') {
+      this.cursor.left = left(this.cursor.left);
+    } else {
+      this.cursor.left = left;
+    }
+    this.canvas.renderAll();
+  }
+
+  moveCursorBack() {
+    if (this.cursorNoteIndex === 0) {
+      return;
+    }
+    this.cursorNoteIndex -= 1;
+    this.moveCursor(this.notes[this.cursorNoteIndex].element.left);
+  }
+
+  moveCursorForward() {
+    if (this.cursorNoteIndex >= this.notes.length) {
+      return;
+    }
+
+    this.moveCursor(cursorLeft => cursorLeft + this.notes[this.cursorNoteIndex].offset);
+    this.cursorNoteIndex += 1;
   }
 
   playback() {

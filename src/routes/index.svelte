@@ -43,6 +43,10 @@
       } else if (e.key === 'p' && octave > 2) {
         octave = Math.max(2, octave - 1);
         staff.setOctave(octave);
+      } else if (e.key === 'h') {
+        staff.moveCursorBack();
+      } else if (e.key === 'l') {
+        staff.moveCursorForward();
       }
 
       const uppercaseKey = e.key.toUpperCase();
