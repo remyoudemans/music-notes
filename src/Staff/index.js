@@ -35,10 +35,13 @@ class Staff {
         stroke: 'black'
     });
 
-    setInterval(() => {
-      this.canvas[this.showCursor ? 'add' : 'remove'](this.cursor);
-      this.showCursor = !this.showCursor;
-    }, 250)
+    // TODO: enable this and delete the next thing if you want cursor to blink
+    // setInterval(() => {
+      // this.canvas[this.showCursor ? 'add' : 'remove'](this.cursor);
+      // this.showCursor = !this.showCursor;
+    // }, 250)
+
+    this.canvas.add(this.cursor);
   }
 
   setOctave(octave) {
