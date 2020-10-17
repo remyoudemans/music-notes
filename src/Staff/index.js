@@ -74,38 +74,36 @@ class Staff {
     ));
   }
 
-  drawSharp(noteX, noteY) {
-    this.canvas.add(
-      new fabric.Path(sharpPath, {
-        left: noteX,
-        top: noteY - 5,
-      })
-    );
+  getSharp(noteX, noteY) {
+    return new fabric.Path(sharpPath, {
+      left: noteX,
+      top: noteY - 5,
+    });
   }
 
-  drawFlat(noteX, noteY) {
-    this.canvas.add(
-      new fabric.Path(flatPath, {
-        left: noteX,
-        top: noteY - 9,
-        scaleY: 1.5,
-      })
-    );
+  getFlat(noteX, noteY) {
+    return new fabric.Path(flatPath, {
+      left: noteX,
+      top: noteY - 9,
+      scaleY: 1.5,
+    });
   }
 
   drawNote(note, accidental = '') {
     const noteY = this.getNoteY(note);
+    let offsetForNote = 20;
     let noteX = this.x + this.noteOffset;
+    let accidentalElement;
 
     if (accidental) {
       if (accidental === '#') {
-        this.drawSharp(noteX, noteY);
+        accidentalElement = this.getSharp(noteX, noteY);
       } else {
-        this.drawFlat(noteX, noteY)
+        accidentalElement = this.getFlat(noteX, noteY)
       }
 
       noteX += 10;
-      this.noteOffset += 10;
+      offsetForNote += 10;
     }
 
     const width = this.lineGap / 2;
@@ -119,19 +117,32 @@ class Staff {
       { stroke: 'black' }
     );
 
-    this.canvas.add(new fabric.Group([circle, line]));
+    const noteElement = new fabric.Group([
+      circle,
+      line,
+      ...(accidentalElement ? [accidentalElement] : [])
+    ]);
+
+    this.canvas.add(noteElement);
     const noteName = `${note}${accidental}${this.octave}`; 
     const noteDuration = "32n";
     this.synth.triggerAttackRelease(noteName, noteDuration);
-    this.notes.push({ note: noteName, duration: noteDuration });
+    this.notes.push({ note: noteName, duration: noteDuration, element: noteElement, offset: offsetForNote });
 
-    this.noteOffset += 20;
+    this.noteOffset += offsetForNote;
     this.cursor.left = this.x + this.noteOffset;
   }
 
   getNoteY(noteName) {
     const octaveOffset = (this.octave - 5) * 3.5 * this.lineGap;
     return this.y + (4.5 - noteNames.indexOf(noteName) * 0.5 ) * this.lineGap - octaveOffset
+  }
+
+  deleteNote() {
+    const removedNote = this.notes.pop();
+    this.canvas.remove(removedNote.element);
+    this.cursor.left -= removedNote.offset;
+    this.noteOffset -= removedNote.offset;
   }
 
   playback() {
