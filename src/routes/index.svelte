@@ -26,7 +26,7 @@
       }
 
       if (e.key === ' ') {
-        staff.playback();
+        staff.soundPlayer.playback();
         playingBack = !playingBack;
         return;
       }
@@ -63,7 +63,9 @@
 
           return undefined;
         })()
-        staff.drawNote(uppercaseKey, accidental);
+
+        const isChordNote = uppercaseKey === e.key;
+        staff.drawNote(uppercaseKey, accidental, isChordNote);
       }
     });
   });
