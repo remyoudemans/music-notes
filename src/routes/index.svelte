@@ -63,7 +63,9 @@
 
           return undefined;
         })()
-        staff.drawNote(uppercaseKey, accidental);
+
+        const isChordNote = uppercaseKey === e.key;
+        staff.drawNote(uppercaseKey, accidental, isChordNote);
       }
     });
   });

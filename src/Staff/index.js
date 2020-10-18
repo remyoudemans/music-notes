@@ -93,10 +93,10 @@ class Staff {
     });
   }
 
-  drawNote(note, accidental = '') {
+  drawNote(note, accidental = '', isChordNote = false) {
     const noteY = this.getNoteY(note);
     let offsetForNote = 20;
-    let noteX = this.x + this.noteOffset;
+    let noteX = this.x + this.noteOffset - (isChordNote && this.notes.length ? this.notes[this.notes.length - 1].offset : 0);
     let accidentalElement;
 
     if (accidental) {
@@ -133,9 +133,11 @@ class Staff {
     this.synth.triggerAttackRelease(noteName, noteDuration);
     this.notes.push({ note: noteName, duration: noteDuration, element: noteElement, offset: offsetForNote });
 
-    this.noteOffset += offsetForNote;
-    this.cursor.left = this.x + this.noteOffset;
-    this.cursorNoteIndex = this.notes.length - 1;
+    if (!isChordNote) {
+      this.noteOffset += offsetForNote;
+      this.cursor.left = this.x + this.noteOffset;
+      this.cursorNoteIndex = this.notes.length - 1;
+    }
   }
 
   getNoteY(noteName) {
