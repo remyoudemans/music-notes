@@ -26,7 +26,7 @@
       }
 
       if (e.key === ' ') {
-        staff.playback();
+        staff.soundPlayer.playback();
         playingBack = !playingBack;
         return;
       }
