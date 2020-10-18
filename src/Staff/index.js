@@ -18,9 +18,7 @@ class Staff {
     this.lineGap = lineGap;
     this.lineLength = lineLength;
     this.noteOffset = 40;
-    this.synth = new Tone.Synth()
-    this.synth.oscillator.type = 'sine';
-    this.synth.toDestination();
+    this.synth = new Tone.PolySynth(Tone.Synth, {oscillator: { type: 'sine'}}).toDestination()
     this.octave = startOctave;
     this.notes = [];
     this.playingBack = false;
@@ -130,8 +128,17 @@ class Staff {
     this.canvas.add(noteElement);
     const noteName = `${note}${accidental}${this.octave}`; 
     const noteDuration = "32n";
-    this.synth.triggerAttackRelease(noteName, noteDuration);
-    this.notes.push({ note: noteName, duration: noteDuration, element: noteElement, offset: offsetForNote });
+
+    if (isChordNote) {
+      const notes = [this.notes[this.notes.length - 1].note, noteName];
+      console.log('notesToPlay:', notes);
+      this.synth.triggerAttackRelease(notes, noteDuration);
+      // this.synth.triggerAttackRelease(['D5', 'F5']);
+    } else {
+      this.synth.triggerAttackRelease(noteName, noteDuration);
+    }
+
+    this.notes.push({ note: noteName, duration: noteDuration, element: noteElement, offset: offsetForNote, isChordNote });
 
     if (!isChordNote) {
       this.noteOffset += offsetForNote;
@@ -192,9 +199,24 @@ class Staff {
 
     this.playingBack = true;
 
-    const part = new Tone.Part((time, note) => {
-      this.synth.triggerAttackRelease(note, "8n", time);
-    }, this.notes.map(({ note }, index) => [`0:${index}`, note]));
+    let time = 0;
+    const notesWithTimes = this.notes.map(({ note, isChordNote }) => {
+      const info = {
+        time: `0:${time - (isChordNote ? 1 : 0)}`,
+        note
+      };
+
+      if (!isChordNote) {
+        time += 1;
+      }
+
+      return info;
+    })
+    
+
+    const part = new Tone.Part((time, value) => {
+      this.synth.triggerAttackRelease(value.note, "8n", time);
+    }, notesWithTimes);
 
     Tone.Transport.scheduleOnce(() => part.start())
     Tone.Transport.start();
